@@ -63,10 +63,14 @@ This project successfully implements all the requirements outlined in the assign
 4.  **Set up the database (in a second terminal):**
     Once the containers are running, open a new terminal and run the following commands to set up the database and ingest the data.
     ```sh
-    # Apply database migrations
+    
+    # Create the new migration instructions
+    docker-compose exec web python manage.py makemigrations
+
+    # Build the new database tables
     docker-compose exec web python manage.py migrate
 
-    # Ingest data from Excel files
+    # Load the initial data
     docker-compose exec web python manage.py ingest_data
     ```
 The application is now running at `http://localhost:8000`.
