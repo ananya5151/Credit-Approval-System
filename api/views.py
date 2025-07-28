@@ -1,3 +1,4 @@
+from django.db.models import Max
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -5,6 +6,7 @@ from .models import Customer, Loan
 from .serializers import CustomerSerializer, LoanSerializer
 from datetime import date
 import math
+import pandas as pd
 from django.db.models import Sum
 
 # [cite_start]Helper function to calculate credit score based on historical data [cite: 48]
@@ -47,11 +49,15 @@ def calculate_credit_score(customer_id):
 # [cite_start]Endpoint: /register [cite: 38]
 class RegisterView(APIView):
     def post(self, request):
+        # Calculate a new, unique customer_id
+        latest_id = Customer.objects.aggregate(max_id=Max('customer_id'))['max_id'] or 0
+        new_customer_id = latest_id + 1
+
         monthly_income = request.data.get('monthly_income')
-        # [cite_start]approved_limit = 36 * monthly_salary (rounded to nearest lakh) [cite: 41]
         approved_limit = round(36 * monthly_income / 100000) * 100000
-        
+
         customer_data = {
+            'customer_id': new_customer_id, # Add the new customer_id
             'first_name': request.data.get('first_name'),
             'last_name': request.data.get('last_name'),
             'age': request.data.get('age'),
@@ -59,11 +65,11 @@ class RegisterView(APIView):
             'phone_number': request.data.get('phone_number'),
             'approved_limit': approved_limit,
         }
-        
+
         serializer = CustomerSerializer(data=customer_data)
         if serializer.is_valid():
             customer = serializer.save()
-            # [cite_start]Response body as per specification [cite: 46]
+            # The response body stays the same, as per the spec
             response_data = {
                 'customer_id': customer.customer_id,
                 'name': f"{customer.first_name} {customer.last_name}",

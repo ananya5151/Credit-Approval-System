@@ -9,6 +9,7 @@ class APITests(APITestCase):
     def setUp(self):
         """Set up initial data for tests."""
         self.customer = Customer.objects.create(
+            customer_id=99,
             first_name="Test",
             last_name="Customer",
             age=30,
@@ -53,7 +54,7 @@ class APITests(APITestCase):
         """
         url = reverse('check-eligibility')
         data = {
-            "customer_id": self.customer.customer_id,
+            "customer_id": self.customer.id,
             "loan_amount": 30000,
             "interest_rate": 15,
             "tenure": 12
@@ -81,7 +82,7 @@ class APITests(APITestCase):
         
         url = reverse('check-eligibility')
         data = {
-            "customer_id": self.customer.customer_id,
+            "customer_id": self.customer.id,
             "loan_amount": 10000,
             "interest_rate": 10,
             "tenure": 6
