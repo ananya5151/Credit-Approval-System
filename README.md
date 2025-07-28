@@ -3,7 +3,7 @@
 This project is a fully containerized credit approval system built with Django, Django REST Framework, and PostgreSQL. It evaluates loan eligibility based on historical data, customer information, and a credit scoring model.
 
 ---
-
+## ✅ FULL API DOCUMENTATION FROM POSTMAN https://www.postman.com/notes-bookmarks-api/workspace/credit-approval-system/collection/31238280-0e160885-62d1-4d78-a2e0-e1ef55713699?action=share&source=copy-link&creator=31238280
 ## ✅ Features & Requirements Checklist
 
 This project successfully implements all the requirements outlined in the assignment:
